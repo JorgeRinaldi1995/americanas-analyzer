@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Profile</h2>
+    <ul>
+        {% for attribute in user_attributes %}
+            <li>{{ attribute.Name }}: {{ attribute.Value }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
