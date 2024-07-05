@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template, session, redirect, url_for
+from flask import Blueprint, request, render_template, session, redirect, url_for
 from app import client, CLIENT_ID
 from app.auth.decorators import login_required
 
@@ -67,6 +67,22 @@ def login():
 
         return redirect(url_for('auth.profile'))
     return render_template('auth/login.html', title='Login')
+
+@auth_bp.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if request.method == 'POST':
+        access_token = session.get('access_token')
+
+        if access_token:
+                    try:
+                        client.global_sign_out(
+                            AccessToken=access_token
+                        )
+                    except client.exceptions.NotAuthorizedException:
+                        pass  # Handle the exception as needed
+        session.clear()
+        return redirect(url_for('auth.login'))
+    return render_template('auth/logout.html', title='Logout')
 
 @auth_bp.route('/profile')
 @login_required

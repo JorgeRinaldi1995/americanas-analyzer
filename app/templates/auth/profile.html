@@ -3,7 +3,9 @@
     <h2>Profile</h2>
     <ul>
         {% for attribute in user_attributes %}
-            <li>{{ attribute.Name }}: {{ attribute.Value }}</li>
+            {% if attribute.Name not in ['email_verified', 'sub'] %}
+                <li>{{ attribute.Name }}: {{ attribute.Value }}</li>
+            {% endif %}
         {% endfor %}
     </ul>
 {% endblock %}
